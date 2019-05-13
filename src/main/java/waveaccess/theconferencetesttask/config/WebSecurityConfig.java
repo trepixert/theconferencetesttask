@@ -1,49 +1,59 @@
 package waveaccess.theconferencetesttask.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import waveaccess.theconferencetesttask.services.CustomUserDetailService;
-
-import javax.sql.DataSource;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import waveaccess.theconferencetesttask.services.UserService;
 
 @Configuration
 @EnableWebSecurity
+@ComponentScan
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private DataSource dataSource;
 
     @Autowired
-    private CustomUserDetailService userDetailsService;
+    private UserService userDetailsService;
+
+    @Autowired
+    private CustomSuccessHandler customSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/","/home","/registration").permitAll()
+                .antMatchers("/", "/registration", "/css/**","/images/**").permitAll()
+                .and().authorizeRequests().antMatchers("/admin/**").hasAuthority("ADMINISTRATOR")
+                .antMatchers("**/addPresentation/**").hasAuthority("PRESENTER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage("/login").usernameParameter("username").successHandler(customSuccessHandler)
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll();
-        http.authorizeRequests().antMatchers("/").permitAll().and()
+        http
                 .authorizeRequests().antMatchers("/console/**").permitAll();
-        http.csrf().disable();
-        http.headers().frameOptions().disable();
+        http
+                .csrf().disable();
+        http
+                .headers().frameOptions().disable();
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .passwordEncoder(NoOpPasswordEncoder.getInstance())
-                .usersByUsernameQuery("select username, password,'true' as enabled from Users_List where username=?")
-                .authoritiesByUsernameQuery("select u.username, ur.role from Users_List u join User_Role ur on u.id=ur.user_id where username=?");
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
     }
 }

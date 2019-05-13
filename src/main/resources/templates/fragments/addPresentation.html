@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Страница входа</title>
+    <title>Страница регистрации</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -43,26 +43,16 @@
 
 <!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter39705265 = new Ya.Metrika({ id:39705265, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/39705265" style="position:absolute; left:-9999px;" alt="Yandex.Metrika" /></div></noscript> <!-- /Yandex.Metrika counter -->
 
-<form class="form-signin" th:action="@{/login}" method="post">
+<form class="form-signin" th:action="@{addPresentation}" method="post">
     <img class="mb-4" th:src="@{/images/WaveAccessIcon.png}" alt="" width="247" height="61">
-    <h1 for="title" class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <div th:if="${param.error}">
-        <h2 class="h3 mb-3 font-weight-normal">Invalid Username or Password</h2>
-    </div>
-    <div th:if="${param.logout}">
-        <h2 class="h3 mb-3 font-weight-normal">You have been logout</h2>
-    </div>
-    <label for="inputUserName" class="sr-only" >User Name</label>
-    <input type="username" id="inputUserName" class="form-control" name="username" placeholder="Username" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">If you still not <a th:href="@{registration}">signed up</a></p>
+    <h1 for="title" class="h3 mb-3 font-weight-normal">Please fill in all fields.</h1>
+    <label for="inputTheme" class="sr-only" >Theme</label>
+    <input type="text" id="inputTheme" class="form-control" name="theme" placeholder="Theme" required autofocus>
+    <label for="inputDate" class="sr-only">Date and time</label>
+    <input type="datetime-local" id="inputDate" class="form-control" name="date" placeholder="dd-MM-yyyy" required>
+    <label for="inputRoom" class="sr-only">Room</label>
+    <input type="text" id="inputRoom" class="form-control" name="room" placeholder="Room" required>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
 </form>
 </body>
 </html>

@@ -1,12 +1,10 @@
 <!doctype html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+<html lang="ru" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>Страница входа</title>
-
+    <title>Панель администратора</title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
@@ -24,11 +22,11 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link th:href="@{/css/signin.css}" rel="stylesheet">
+    <link th:href="@{/css/dashboard.css}" rel="stylesheet">
 
 </head>
 
-<body class="text-center">
+<body>
 
 <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -43,26 +41,42 @@
 
 <!-- Yandex.Metrika counter --> <script type="text/javascript"> (function (d, w, c) { (w[c] = w[c] || []).push(function() { try { w.yaCounter39705265 = new Ya.Metrika({ id:39705265, clickmap:true, trackLinks:true, accurateTrackBounce:true, webvisor:true }); } catch(e) { } }); var n = d.getElementsByTagName("script")[0], s = d.createElement("script"), f = function () { n.parentNode.insertBefore(s, n); }; s.type = "text/javascript"; s.async = true; s.src = "https://mc.yandex.ru/metrika/watch.js"; if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); } })(document, window, "yandex_metrika_callbacks"); </script> <noscript><div><img src="https://mc.yandex.ru/watch/39705265" style="position:absolute; left:-9999px;" alt="Yandex.Metrika" /></div></noscript> <!-- /Yandex.Metrika counter -->
 
-<form class="form-signin" th:action="@{/login}" method="post">
-    <img class="mb-4" th:src="@{/images/WaveAccessIcon.png}" alt="" width="247" height="61">
-    <h1 for="title" class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <div th:if="${param.error}">
-        <h2 class="h3 mb-3 font-weight-normal">Invalid Username or Password</h2>
+<nav th:insert="fragments/topnav :: navbar"></nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2 mt-5">Главная страница</h1>
+                </div>
+
+                <h2>Список пользователей</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Role</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${users.empty}">
+                            <td colspan="2"> No users found</td>
+                        </tr>
+                        <tr th:each="user : ${users}">
+                            <td><span th:text="${user.username}"> Username </span></td>
+                            <td><span th:text="${user.name}"> Name </span></td>
+                            <td><span th:text="${user.surname}"> Surname</span></td>
+                            <td><span th:text="${user.role}"> Role </span></td>
+                            <td><a th:href="@{admin/edit/{id}(id=${user.id})}">Edit</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
     </div>
-    <div th:if="${param.logout}">
-        <h2 class="h3 mb-3 font-weight-normal">You have been logout</h2>
-    </div>
-    <label for="inputUserName" class="sr-only" >User Name</label>
-    <input type="username" id="inputUserName" class="form-control" name="username" placeholder="Username" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" name="password" placeholder="Password" required>
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>
-    </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">If you still not <a th:href="@{registration}">signed up</a></p>
-</form>
 </body>
 </html>

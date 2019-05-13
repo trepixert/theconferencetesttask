@@ -1,7 +1,14 @@
 package waveaccess.theconferencetesttask.models;
 
-public enum Role {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
     LISTENER,
     PRESENTER,
-    ADMINISTRATOR
+    ADMINISTRATOR;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }
