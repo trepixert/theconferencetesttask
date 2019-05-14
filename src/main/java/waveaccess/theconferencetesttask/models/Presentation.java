@@ -1,7 +1,6 @@
 package waveaccess.theconferencetesttask.models;
 
 import javax.persistence.*;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -9,10 +8,10 @@ import java.util.List;
 public class Presentation {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long presentations_id;
+    private Long id;
     private String theme;
 
-    @ManyToMany(mappedBy = "presentations")
+    @ManyToMany(mappedBy = "presentations",fetch = FetchType.EAGER)
     private List<User> author;
 
     @Column(name = "Date_and_time", unique = true)
@@ -30,12 +29,19 @@ public class Presentation {
         this.room = room;
     }
 
+    public Presentation(String theme, List<User> author, String dateTimeFormat, Room room) {
+        this.theme = theme;
+        this.author = author;
+        this.dateTimeFormat = dateTimeFormat;
+        this.room = room;
+    }
+
     public Long getId() {
-        return presentations_id;
+        return id;
     }
 
     public void setId(Long id) {
-        this.presentations_id = id;
+        this.id = id;
     }
 
     public List<User> getAuthor() {

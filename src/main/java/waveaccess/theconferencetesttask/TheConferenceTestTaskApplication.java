@@ -13,6 +13,11 @@ import waveaccess.theconferencetesttask.models.User;
 import waveaccess.theconferencetesttask.repo.PresentationRepo;
 import waveaccess.theconferencetesttask.repo.UserRepo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 @SpringBootApplication
 @EntityScan(value = "waveaccess.theconferencetesttask.models")
 public class TheConferenceTestTaskApplication {
@@ -24,18 +29,52 @@ public class TheConferenceTestTaskApplication {
     @Bean
     CommandLineRunner runner(UserRepo userRepo, PresentationRepo presentationRepo) {
         return args -> {
-            userRepo.save(new User("tukTukNeo","Mister","Anderson", new BCryptPasswordEncoder().encode("followthewhiterabbit"), Role.ADMINISTRATOR));
-            userRepo.save(new User("resu","someName","someSurname", new BCryptPasswordEncoder().encode("12345"), Role.PRESENTER));
-            userRepo.save(new User("lamer","w","a", new BCryptPasswordEncoder().encode("qwerty"), Role.LISTENER));
-            userRepo.save(new User("someguy","v","e", new BCryptPasswordEncoder().encode("qwerty"), Role.LISTENER));
-            userRepo.save(new User("idontknow","a", "c", new BCryptPasswordEncoder().encode("qwerty"), Role.LISTENER));
-            userRepo.save(new User("nepridumal","ce","ss", new BCryptPasswordEncoder().encode("qwerty"), Role.LISTENER));
-            presentationRepo.save(new Presentation("JTI Compilation","2019-05-16 11:30", Room.OFFICE));
-            presentationRepo.save(new Presentation("JTI Compilation","2019-05-16 11:30", Room.HALL));
-            presentationRepo.save(new Presentation("JTI Compilation","2019-05-16 11:30", Room.AUDIENCE));
-            presentationRepo.save(new Presentation("JTI Compilation","2019-05-16 11:30", Room.HALL));
-            presentationRepo.save(new Presentation("JTI Compilation","2019-05-16 11:30", Room.OFFICE));
-            presentationRepo.save(new Presentation("JTI Compilation","2019-05-16 11:30", Room.AUDIENCE));
+            userRepo.save(new User("admin","admin","admin", new BCryptPasswordEncoder().encode("a"), Role.ADMINISTRATOR));
+            userRepo.save(new User("presenter","presenter","presenter", new BCryptPasswordEncoder().encode("p"), Role.PRESENTER));
+            userRepo.save(new User("listener","listener","listener", new BCryptPasswordEncoder().encode("l"), Role.LISTENER));
+            userRepo.save(new User("presenter2","presenter2","presenter2", new BCryptPasswordEncoder().encode("l"), Role.PRESENTER));
+            userRepo.save(new User("listener2","listener2", "listener2", new BCryptPasswordEncoder().encode("l"), Role.LISTENER));
+            userRepo.save(new User("listener3","listener3","listener3", new BCryptPasswordEncoder().encode("l"), Role.LISTENER));
+
+            User author = userRepo.findUserByUsername("presenter");
+            User author2 = userRepo.findUserByUsername("presenter2");
+
+            presentationRepo.save(new Presentation("JTI Compilation","2019-05-15 11:30", Room.OFFICE));
+            Presentation presentationByTheme = presentationRepo.findPresentationByTheme("JTI Compilation");
+            presentationByTheme.addAuthor(author);
+            presentationRepo.save(presentationByTheme);
+            author.addPresentation(presentationByTheme);
+
+            presentationRepo.save(new Presentation("Optimization", "2019-05-17 11:30", Room.HALL));
+            presentationByTheme = presentationRepo.findPresentationByTheme("Optimization");
+            presentationByTheme.addAuthor(author2);
+            presentationRepo.save(presentationByTheme);
+            author2.addPresentation(presentationByTheme);
+
+            presentationRepo.save(new Presentation("Spring Boot","2019-05-18 11:30", Room.AUDIENCE));
+            presentationByTheme = presentationRepo.findPresentationByTheme("Spring Boot");
+            presentationByTheme.addAuthor(author);
+            presentationByTheme.addAuthor(author2);
+            presentationRepo.save(presentationByTheme);
+            author.addPresentation(presentationByTheme);
+            author2.addPresentation(presentationByTheme);
+
+            presentationRepo.save(new Presentation("Gradle","2019-05-19 11:30", Room.HALL));
+            presentationByTheme = presentationRepo.findPresentationByTheme("Gradle");
+            presentationByTheme.addAuthor(author);
+            presentationByTheme.addAuthor(author2);
+            presentationRepo.save(presentationByTheme);
+            author.addPresentation(presentationByTheme);
+            author2.addPresentation(presentationByTheme);
+
+            presentationRepo.save(new Presentation("Maven", "2019-05-20 11:30", Room.OFFICE));
+            presentationByTheme = presentationRepo.findPresentationByTheme("Maven");
+            presentationByTheme.addAuthor(author2);
+            presentationRepo.save(presentationByTheme);
+            author2.addPresentation(presentationByTheme);
+
+            userRepo.save(author);
+            userRepo.save(author2);
         };
     }
 }

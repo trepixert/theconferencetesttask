@@ -43,7 +43,7 @@ public class UserAdminController {
        }
        userService.save(user);
        model.addAttribute("users",userService.findAll());
-       return "redirect:/user";
+       return "redirect:/admin";
     }
 
     @GetMapping("/delete/{id}")

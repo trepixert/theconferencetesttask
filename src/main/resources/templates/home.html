@@ -54,6 +54,7 @@
                             <tr>
                                 <th>Theme</th>
                                 <th>Time and Date</th>
+                                <th>Authors</th>
                                 <th>Room</th>
                             </tr>
                             </thead>
@@ -65,6 +66,11 @@
                                 <td><span th:text="${lecture.theme}"> Theme </span></td>
                                 <td>
                                     <label th:text="${lecture.dateTimeFormat}"> Date </label>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li th:each="author : ${lecture.author}" th:text="${author.username}"> Authors</li>
+                                    </ul>
                                 </td>
                                 <td>
                                     <span th:text="${lecture.room}"> Room </span>

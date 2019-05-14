@@ -48,10 +48,17 @@
     <h1 for="title" class="h3 mb-3 font-weight-normal">Please fill in all fields.</h1>
     <label for="inputTheme" class="sr-only" >Theme</label>
     <input type="text" id="inputTheme" class="form-control" name="theme" placeholder="Theme" required autofocus>
+    <label for="inputAuthor" class="sr-only" >Authors</label>
+    <input type="text" id="inputAuthor" class="form-control" th:name="author" placeholder="Enter authors separated by commas." required>
     <label for="inputDate" class="sr-only">Date and time</label>
     <input type="datetime-local" id="inputDate" class="form-control" name="date" placeholder="dd-MM-yyyy" required>
     <label for="inputRoom" class="sr-only">Room</label>
-    <input type="text" id="inputRoom" class="form-control" name="room" placeholder="Room" required>
+    <input type="text" list="rooms" id="inputRoom" class="form-control" name="room" placeholder="Room" required>
+    <datalist id="rooms">
+        <option>AUDIENCE</option>
+        <option>OFFICE</option>
+        <option>HALL</option>
+    </datalist>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
 </form>
 </body>

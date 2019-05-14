@@ -3,7 +3,18 @@ package waveaccess.theconferencetesttask.models;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -13,7 +24,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long conference_users_id;
+    private Long id;
 
     private String username;
     private String password;
@@ -24,11 +35,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(name = "conference_users_presentations",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "conference_users_id"),
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "presentation_id",
-                    referencedColumnName = "presentations_id"))
+                    referencedColumnName = "id"))
     private List<Presentation> presentations;
 
     public User() {
@@ -43,7 +54,7 @@ public class User implements UserDetails {
     }
 
     public User(User user) {
-        this.conference_users_id = user.getId();
+        this.id = user.getId();
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.role = user.getRole();
@@ -124,11 +135,11 @@ public class User implements UserDetails {
     }
 
     public Long getId() {
-        return conference_users_id;
+        return id;
     }
 
     public void setId(Long id) {
-        this.conference_users_id = id;
+        this.id = id;
     }
 
     public boolean isPresenter(){
@@ -137,5 +148,9 @@ public class User implements UserDetails {
 
     public boolean isAdmin(){
         return role.equals(Role.ADMINISTRATOR);
+    }
+
+    public void addPresentation(Presentation presentation){
+        this.presentations.add(presentation);
     }
 }

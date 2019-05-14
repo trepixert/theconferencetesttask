@@ -24,7 +24,7 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public List<Presentation> findAll() {
-        return presentationRepo.findAll();
+        return presentationRepo.findAllByQuery();
     }
 
 
