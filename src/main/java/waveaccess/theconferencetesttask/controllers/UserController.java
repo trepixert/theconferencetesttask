@@ -63,18 +63,20 @@ public class UserController {
      * @see CustomConverter#convert(String)
      */
     @PostMapping("/addPresentation")
-    public String addPresentation(@Valid Presentation presentation, String date, @RequestParam("author") User author, Model model){
+    public String addPresentation(@Valid Presentation presentation, String date, @RequestParam("author") List<User> author, Model model){
         Presentation presentationFromDB = presentationService.findPresentationByTheme(presentation.getTheme());
         if(presentationFromDB!=null){
             model.addAttribute("message","User already exists");
             return "fragments/addPresentation";
         }
-        presentation.addAuthor(author);
+        author.forEach(presentation::addAuthor);
         date = date.replaceAll("T"," ");
         presentation.setDateTimeFormat(date);
         presentationService.save(presentation);
-        author.addPresentation(presentation);
-        userService.save(author);
+        author.forEach(user -> {
+            user.addPresentation(presentation);
+            userService.save(user);
+        });
         model.addAttribute("lectures",presentationService.findAll());
         return "redirect:/home";
     }

@@ -6,14 +6,22 @@ import org.springframework.stereotype.Component;
 import waveaccess.theconferencetesttask.models.User;
 import waveaccess.theconferencetesttask.services.UserService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
-public class CustomConverter implements Converter<String, User> {
+public class CustomConverter implements Converter<String, List<User>> {
 
     @Autowired
     private UserService userService;
 
     @Override
-    public User convert(String source) {
-        return userService.findUserByUsername(source);
+    public List<User> convert(String source) {
+        String[] split = source.split(", ");
+        List<User> authors = new ArrayList<>();
+        for (String s : split) {
+            authors.add(userService.findUserByUsername(s));
+        }
+        return authors;
     }
 }
