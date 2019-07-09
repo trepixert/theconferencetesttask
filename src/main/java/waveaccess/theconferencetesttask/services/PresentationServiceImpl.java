@@ -41,7 +41,6 @@ public class PresentationServiceImpl implements PresentationService {
             user.addPresentation(presentation);
             userRepo.save(user);
         });
-        presentationRepo.save(presentation);
     }
 
     @Override
