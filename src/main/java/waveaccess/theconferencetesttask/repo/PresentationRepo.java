@@ -2,10 +2,7 @@ package waveaccess.theconferencetesttask.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import waveaccess.theconferencetesttask.models.Presentation;
-import waveaccess.theconferencetesttask.services.PresentationServiceImpl;
 
 import java.util.List;
 

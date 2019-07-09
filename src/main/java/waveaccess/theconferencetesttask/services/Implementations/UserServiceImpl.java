@@ -1,4 +1,4 @@
-package waveaccess.theconferencetesttask.services;
+package waveaccess.theconferencetesttask.services.Implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import waveaccess.theconferencetesttask.models.Role;
 import waveaccess.theconferencetesttask.models.User;
 import waveaccess.theconferencetesttask.repo.UserRepo;
+import waveaccess.theconferencetesttask.services.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public Optional<User> findById(long id) {
         return userRepo.findById(id);
+    }
+
+    @Override
+    public void update(User user){
+        userRepo.save(user);
     }
 
     @Override

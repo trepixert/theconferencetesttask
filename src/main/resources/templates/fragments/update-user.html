@@ -24,7 +24,7 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    <link href="../static/css/signin.css" th:href="@{/css/signin.css}" rel="stylesheet">
+    <link th:href="@{/css/signin.css}" rel="stylesheet">
 
 </head>
 
@@ -45,6 +45,7 @@
 
 
 <form class="form-signin" action="#" th:action="@{/admin/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+    <img class="mb-4" th:src="@{/images/WaveAccessIcon.png}" alt="" width="247" height="61">
     <label for="name" class="sr-only">Username</label>
     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
     <input type="text" th:field="*{username}" class="form-control" id="username" placeholder="Username">
@@ -53,6 +54,8 @@
     <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
     <label for="surname" class="sr-only">Surname</label>
     <input type="text" th:field="*{surname}" class="form-control" id="surname" placeholder="Surname">
+    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+    <input type="hidden" th:field="*{password}" id="password">
     <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
     <label for="name" class="sr-only">Role</label>
     <input type="text" list="roles" th:field="*{role}" class="form-control" id="role" placeholder="Role">
@@ -61,9 +64,7 @@
         <option>PRESENTER</option>
         <option>ADMINISTRATOR</option>
     </datalist>
-    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
-    <input type="hidden" th:field="*{password}" id="password">
-    <input type="submit" value="Update User">
+    <input type="submit" class="btn btn-lg btn-primary btn-block" value="Update User">
 
 </form>
 </body>

@@ -41,7 +41,7 @@ public class UserAdminController {
            user.setId(id);
            return "fragments/update-user";
        }
-       userService.save(user);
+       userService.update(user);
        model.addAttribute("users",userService.findAll());
        return "redirect:/admin";
     }
@@ -52,6 +52,6 @@ public class UserAdminController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         userService.delete(user);
         model.addAttribute("users", userService.findAll());
-        return "index";
+        return "admin";
     }
 }

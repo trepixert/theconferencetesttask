@@ -1,4 +1,4 @@
-package waveaccess.theconferencetesttask.services;
+package waveaccess.theconferencetesttask.services.Implementations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,6 +6,7 @@ import waveaccess.theconferencetesttask.models.Presentation;
 import waveaccess.theconferencetesttask.models.User;
 import waveaccess.theconferencetesttask.repo.PresentationRepo;
 import waveaccess.theconferencetesttask.repo.UserRepo;
+import waveaccess.theconferencetesttask.services.PresentationService;
 
 import java.util.Iterator;
 import java.util.List;

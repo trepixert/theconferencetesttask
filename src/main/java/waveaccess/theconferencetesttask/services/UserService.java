@@ -9,6 +9,9 @@ import java.util.Optional;
 public interface UserService extends UserDetailsService {
     List<User> findAll();
     Optional<User> findById(long id);
+
+    void update(User user);
+
     void save(User user);
     User findUserByUsername(String username);
     void delete(User user);
