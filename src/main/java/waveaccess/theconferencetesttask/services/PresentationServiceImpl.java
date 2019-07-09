@@ -3,11 +3,11 @@ package waveaccess.theconferencetesttask.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import waveaccess.theconferencetesttask.models.Presentation;
-import waveaccess.theconferencetesttask.models.Role;
 import waveaccess.theconferencetesttask.models.User;
 import waveaccess.theconferencetesttask.repo.PresentationRepo;
+import waveaccess.theconferencetesttask.repo.UserRepo;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +16,9 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Autowired
     private PresentationRepo presentationRepo;
+
+    @Autowired
+    private UserRepo userRepo;
 
     @Override
     public Optional<Presentation> findById(Long id) {
@@ -29,7 +32,15 @@ public class PresentationServiceImpl implements PresentationService {
 
 
     @Override
-    public void save(Presentation presentation) {
+    public void save(Presentation presentation, String date, List<User> author) {
+        author.forEach(presentation::addAuthor);
+        date = date.replaceAll("T"," ");
+        presentation.setDateTimeFormat(date);
+        presentationRepo.save(presentation);
+        author.forEach(user -> {
+            user.addPresentation(presentation);
+            userRepo.save(user);
+        });
         presentationRepo.save(presentation);
     }
 
@@ -40,6 +51,12 @@ public class PresentationServiceImpl implements PresentationService {
 
     @Override
     public void delete(Presentation presentation) {
+        Iterator<User> i = presentation.getAuthor().iterator();
+        while(i.hasNext()) {
+            User author = i.next();
+            author.getPresentations().remove(presentation);
+            i.remove();
+        }
         presentationRepo.delete(presentation);
     }
 }

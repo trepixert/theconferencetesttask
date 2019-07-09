@@ -30,8 +30,6 @@ public class RegistrationController {
             model.put("message","User already exists");
             return "registration";
         }
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-        user.setRole(Role.LISTENER);
         userService.save(user);
         return "redirect:/login";
     }
